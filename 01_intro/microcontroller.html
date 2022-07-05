@@ -1,0 +1,71 @@
+!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<title>PHYS S-12: Intro to Digital Fabrication </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div style="align-items: left; justify-content:left;" class="container-fluid">
+    <h3 style="margin: 15px"> PHYS S-12: Intro to Digital Fabrication</h3>
+    <div class="navbar-nav">
+      <h4></h4>
+      <h4><a class="nav-link" href="../index.html">Home</a></h4>
+      <h4><a class="nav-link" href="../about.html">About</a></h4>
+    </div>
+  </div>
+</nav>
+
+<body>
+
+
+<xmp theme="journal" style="display:none;">
+
+
+
+  ### Week 4: Microcontroller Programming
+ This week's assignment involved working on a Metro microcontroller and using it power a motor or an LED. Using the Arduino IDE application, we were able to load programs and send them directly to our Metro microcontroller, which powered our motor. This week's assignment required us to work on the following materials: Wires, Metro microntroller, breadboars, LEDs, Buttons,a multimeter, and resistors.
+ 
+ In class, we learned we used the following 'Blink' program to make an LED light blink using a microcontroller. Other than this, we also learned how to use the LED with a button.
+ <pre><code class="language-arduino">
+void setup() {
+  // initialize digital pin LED_BUILTIN as an output.
+  pinMode(LED_BUILTIN, OUTPUT);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+  digitalWrite(LED_BUILTIN, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(1000);                       // wait for a second
+  digitalWrite(LED_BUILTIN, LOW);    // turn the LED off by making the voltage LOW
+  delay(1000);                       // wait for a second
+}
+</code></pre> 
+ 
+ Here is a schematic representation of the circut:
+ ![circut 1](screenshot4.png)
+ 
+ <video controls>
+    <source src="IMG_6029.MOV.mp4" type="video/mp4">
+</video>
+
+
+ 
+Back to [Home](../index.html).
+
+
+
+</xmp>
+</body>
+
+<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+
+</html>
