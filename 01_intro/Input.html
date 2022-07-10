@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/arduino-light.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/languages/arduino.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script> 
+</head>
+
+<title>PHYS S-12: Intro to Digital Fabrication </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div style="align-items: left; justify-content:left;" class="container-fluid">
+    <h3 style="margin: 15px"> PHYS S-12: Intro to Digital Fabrication</h3>
+    <div class="navbar-nav">
+      <h4></h4>
+      <h4><a class="nav-link" href="../index.html">Home</a></h4>
+      <h4><a class="nav-link" href="../about.html">About</a></h4>
+    </div>
+  </div>
+</nav>
+
+<body>
+
+
+<xmp theme="journal" style="display:none;">
+
+
+
+  ### Week 6: Electronic Input Devices
+ For this week's assignment, I worked on three kinds of sensors: a <a href="https://create.arduino.cc/projecthub/Marcazzan_M/how-easy-is-it-to-use-a-thermistor-e39321">Thermistor</a>, a <a href="https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/">Gyroscope</a>, a <a href="https://nathanmelenbrink.github.io/intro-dig-fab/06_input/index.html">Flex Sensor</a>
+ 
+ The Thermistor required the following materials: a 10k ohm resistor, a Thermistor, Arduino UNO/Metro, Jumper Wires, and a Breadboard. Here is the Schematic Representation:
+ 
+ And here is the code for the thermistor:
+ <pre><code class="language-arduino">
+void loop(){
+  //Thermometer with thermistor
+
+/*thermistor parameters:
+ * RT0: 10 000 Ω
+ * B: 3977 K +- 0.75%
+ * T0:  25 C
+ * +- 5%
+ */
+
+//These values are in the datasheet
+#define RT0 10000   // Ω
+#define B 3977      // K
+//--------------------------------------
+
+
+#define VCC 5    //Supply voltage
+#define R 10000  //R=10KΩ
+
+//Variables
+float RT, VR, ln, TX, T0, VRT;
+
+void setup() {
+  Serial.begin(9600);
+  T0 = 25 + 273.15;                 //Temperature T0 from datasheet, conversion from Celsius to kelvin
+}
+
+void loop() {
+  VRT = analogRead(A0);              //Acquisition analog value of VRT
+  VRT = (5.00 / 1023.00) * VRT;      //Conversion to voltage
+  VR = VCC - VRT;
+  RT = VRT / (VR / R);               //Resistance of RT
+
+  ln = log(RT / RT0);
+  TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
+
+  TX = TX - 273.15;                 //Conversion to Celsius
+
+  Serial.print("Temperature:");
+  Serial.print("\t");
+  Serial.print(TX);
+  Serial.print("C\t\t");
+  Serial.print(TX + 273.15);        //Conversion to Kelvin
+  Serial.print("K\t\t");
+  Serial.print((TX * 1.8) + 32);    //Conversion to Fahrenheit
+  Serial.println("F");
+  delay(500);
+
+}
+}
+</code></pre> 
+ 
+ <video controls>
+    <source src="IMG_6029.MOV.mp4" type="video/mp4">
+</video>
+
+
+ 
+Back to [Home](../index.html).
+
+
+
+</xmp>
+</body>
+
+<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+
+</html>
