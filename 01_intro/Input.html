@@ -33,7 +33,8 @@
   ### Week 6: Electronic Input Devices
  For this week's assignment, I worked on three kinds of sensors: a <a href="https://create.arduino.cc/projecthub/Marcazzan_M/how-easy-is-it-to-use-a-thermistor-e39321">Thermistor</a>, a <a href="https://randomnerdtutorials.com/arduino-mpu-6050-accelerometer-gyroscope/">Gyroscope</a>, a <a href="https://nathanmelenbrink.github.io/intro-dig-fab/06_input/index.html">Flex Sensor</a>
  
- The Thermistor required the following materials: a 10k ohm resistor, a Thermistor, Arduino UNO/Metro, Jumper Wires, and a Breadboard. Here is the Schematic Representation: 
+ <h2> 1. Thermistor </h2>
+  The Thermistor required the following materials: a 10k ohm resistor, a Thermistor, Arduino UNO/Metro, Jumper Wires, and a Breadboard. Here is the Schematic Representation: 
  ![schematic](termistore_bb.jpg)
 
  And here is the code for the thermistor:
@@ -95,6 +96,165 @@ void loop() {
  <video controls>
     <source src="IMG_6055.MOV.mp4" type="video/mp4">
 </video> 
+
+ <h2> 2. The Gyroscope </h2>
+ The Gyroscope required the following parts: MPU-6050 Accelerometer Gyroscope, Arduino UNO, Breadboard, and Jumper Wires. In addition, the following libraries also need to be installed in the user's Arduino IDE application: adafruitmpu6050, Adafruit Unified Sensor, and the Adafruit Bus IO.
+
+ Here is a schematic representation of the circut:
+
+ Here is the code that I used for the Gyroscope:
+ <pre><code class="language-arduino">
+#include <Adafruit_MPU6050.h>
+#include <Adafruit_Sensor.h>
+#include <Wire.h>
+
+Adafruit_MPU6050 mpu;
+
+void setup(void) {
+  Serial.begin(115200);
+  while (!Serial)
+    delay(10); // will pause Zero, Leonardo, etc until serial console opens
+
+  Serial.println("Adafruit MPU6050 test!");
+
+  // Try to initialize!
+  if (!mpu.begin()) {
+    Serial.println("Failed to find MPU6050 chip");
+    while (1) {
+      delay(10);
+    }
+  }
+  Serial.println("MPU6050 Found!");
+
+  mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+  Serial.print("Accelerometer range set to: ");
+  switch (mpu.getAccelerometerRange()) {
+  case MPU6050_RANGE_2_G:
+    Serial.println("+-2G");
+    break;
+  case MPU6050_RANGE_4_G:
+    Serial.println("+-4G");
+    break;
+  case MPU6050_RANGE_8_G:
+    Serial.println("+-8G");
+    break;
+  case MPU6050_RANGE_16_G:
+    Serial.println("+-16G");
+    break;
+  }
+  mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+  Serial.print("Gyro range set to: ");
+  switch (mpu.getGyroRange()) {
+  case MPU6050_RANGE_250_DEG:
+    Serial.println("+- 250 deg/s");
+    break;
+  case MPU6050_RANGE_500_DEG:
+    Serial.println("+- 500 deg/s");
+    break;
+  case MPU6050_RANGE_1000_DEG:
+    Serial.println("+- 1000 deg/s");
+    break;
+  case MPU6050_RANGE_2000_DEG:
+    Serial.println("+- 2000 deg/s");
+    break;
+  }
+
+  mpu.setFilterBandwidth(MPU6050_BAND_5_HZ);
+  Serial.print("Filter bandwidth set to: ");
+  switch (mpu.getFilterBandwidth()) {
+  case MPU6050_BAND_260_HZ:
+    Serial.println("260 Hz");
+    break;
+  case MPU6050_BAND_184_HZ:
+    Serial.println("184 Hz");
+    break;
+  case MPU6050_BAND_94_HZ:
+    Serial.println("94 Hz");
+    break;
+  case MPU6050_BAND_44_HZ:
+    Serial.println("44 Hz");
+    break;
+  case MPU6050_BAND_21_HZ:
+    Serial.println("21 Hz");
+    break;
+  case MPU6050_BAND_10_HZ:
+    Serial.println("10 Hz");
+    break;
+  case MPU6050_BAND_5_HZ:
+    Serial.println("5 Hz");
+    break;
+  }
+
+  Serial.println("");
+  delay(100);
+}
+
+void loop() {
+  /* Get new sensor events with the readings */
+  sensors_event_t a, g, temp;
+  mpu.getEvent(&a, &g, &temp);
+
+  /* Print out the values */
+  Serial.print("Acceleration X: ");
+  Serial.print(a.acceleration.x);
+  Serial.print(", Y: ");
+  Serial.print(a.acceleration.y);
+  Serial.print(", Z: ");
+  Serial.print(a.acceleration.z);
+  Serial.println(" m/s^2");
+
+  Serial.print("Rotation X: ");
+  Serial.print(g.gyro.x);
+  Serial.print(", Y: ");
+  Serial.print(g.gyro.y);
+  Serial.print(", Z: ");
+  Serial.print(g.gyro.z);
+  Serial.println(" rad/s");
+
+  Serial.print("Temperature: ");
+  Serial.print(temp.temperature);
+  Serial.println(" degC");
+
+  Serial.println("");
+  delay(500);
+}
+</code></pre> 
+
+ Here are some photos and videos that show my work with the gyroscope:
+
+
+
+ <h2> 3. The Flex Sensor </h2>
+ I prepared a Flex Sensor using two copper plates, some foam, an Arduino UNO, and a couple of Jumper Wires. The Flex Sensor was prepared using the Tx-Rx method of parallel plate capacitors. 
+
+ Here is the code that I used for the Flex Sensor:
+ <pre><code class="language-arduino">
+int analog_pin = A3;
+int tx_pin = 4;
+int read_high;
+int read_low;
+int diff; 
+
+void setup() {
+    pinMode(tx_pin, OUTPUT);      // Pin 4 provides the voltage step
+    Serial.begin(9600);
+}
+
+void loop() {
+    digitalWrite(tx_pin,HIGH);           // Step the voltage high on conductor 1.
+    read_high = analogRead(analog_pin);  // Measure response of conductor 2.
+    delayMicroseconds(100);              // Delay to reach steady state.
+    digitalWrite(tx_pin,LOW);            // Step the voltage to zero on conductor 1.
+    read_low = analogRead(analog_pin);   // Measure response of conductor 2.
+    diff = read_high - read_low;         // desired answer is the difference between high and low.
+    Serial.println(diff);
+}
+</code></pre> 
+
+Here is a photo of the Flex Sensor:
+
+Also, Here is a table that shows the various readings I obtained using the Flex Sensor. I used whatever objects I could find and then weighed them on a weighing scale to know their mass in grams. I then put these objects on the Flex sensor to obtain various readings. Here is a summary of those readings:
+
 
 
  
