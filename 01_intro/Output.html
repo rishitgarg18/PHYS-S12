@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<title>PHYS S-12: Intro to Digital Fabrication </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../style.css" rel="stylesheet">
+
+
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div style="align-items: left; justify-content:left;" class="container-fluid">
+    <h3 style="margin: 15px"> PHYS S-12: Intro to Digital Fabrication</h3>
+    <div class="navbar-nav">
+      <h4></h4>
+      <h4><a class="nav-link" href="../index.html">Home</a></h4>
+      <h4><a class="nav-link" href="../about.html">About</a></h4>
+    </div>
+  </div>
+</nav>
+
+<body>
+
+
+<xmp theme="journal" style="display:none;">
+
+
+
+  ### Week 7: Electroniv Output Devices
+ For this week's assignment, I worked mainly on the following things: a Servo Motor, an ESP 32, a Piezo Buzzer, and a circut with a thermistor as an input device and a motor as an output device.
+ 
+
+ <h2> 1. Servo Motor </h2>
+ This week we worked on servo motors in class and explored them as output devices. Here is an image from my setup:
+ ![servo motor](Servo.jpeg)
+
+ Here is the Arduino code that I used to power my Servo Motor:
+ <pre><code class="language-arduino">
+#include <Servo.h>
+
+Servo myservo;  // create servo object to control a servo
+
+int potpin = 0;  // analog pin used to connect the potentiometer
+int val;    // variable to read the value from the analog pin
+
+void setup() {
+  myservo.attach(9);  // attaches the servo on pin 9 to the servo object
+}
+
+void loop() {
+  val = analogRead(potpin);            // reads the value of the potentiometer (value between 0 and 1023)
+  val = map(val, 0, 1023, 0, 180);     // scale it to use it with the servo (value between 0 and 180)
+  myservo.write(val);                  // sets the servo position according to the scaled value
+  delay(15);                           // waits for the servo to get there
+}
+</code></pre> 
+
+
+
+ <h2> 2. ESP 32 Wifi Scan Function
+ With an ESP 32 and a Wifi Scan function, I was able to get a scan of the Wifi which I was using during the time I was running my program. Here is a photo and a video that show the setup and the result:
+ ![ESP 32](ESP32.jpeg)
+ <video controls>
+    <source src="ESP32_wifi.mp4" type="video/mp4">
+</video>
+
+
+ Here is the code that I used for running this program:
+ <pre><code class="language-arduino">
+/*
+ *  This sketch demonstrates how to scan WiFi networks.
+ *  The API is almost the same as with the WiFi Shield library,
+ *  the most obvious difference being the different file you need to include:
+ */
+#include "WiFi.h"
+
+void setup()
+{
+    Serial.begin(115200);
+
+    // Set WiFi to station mode and disconnect from an AP if it was previously connected
+    WiFi.mode(WIFI_STA);
+    WiFi.disconnect();
+    delay(100);
+
+    Serial.println("Setup done");
+}
+
+void loop()
+{
+    Serial.println("scan start");
+
+    // WiFi.scanNetworks will return the number of networks found
+    int n = WiFi.scanNetworks();
+    Serial.println("scan done");
+    if (n == 0) {
+        Serial.println("no networks found");
+    } else {
+        Serial.print(n);
+        Serial.println(" networks found");
+        for (int i = 0; i < n; ++i) {
+            // Print SSID and RSSI for each network found
+            Serial.print(i + 1);
+            Serial.print(": ");
+            Serial.print(WiFi.SSID(i));
+            Serial.print(" (");
+            Serial.print(WiFi.RSSI(i));
+            Serial.print(")");
+            Serial.println((WiFi.encryptionType(i) == WIFI_AUTH_OPEN)?" ":"*");
+            delay(10);
+        }
+    }
+    Serial.println("");
+
+    // Wait a bit before scanning again
+    delay(5000);
+}
+</code></pre> 
+
+
+
+
+ <h2> 3. Piezo Buzzer </h2>
+ I used a Piezo buzzer for this week's assignment to get songs as output from my setup. Here are a few videos of my Piezo Buzzer. In the first video, we have the theme of 'The Godfather', then the Star Wars theme and finally the evergreen Nokia ringtone. 
+ <video controls>
+    <source src="Godfather.mp4" type="video/mp4">
+</video>
+
+<video controls>
+    <source src="Star_wars.mp4" type="video/mp4">
+</video>
+
+<video controls>
+    <source src="Nokia.mp4" type="video/mp4">
+</video>
+ 
+
+ Here are the links to the various codes that I used to generate these songs:
+ <a href="https://github.com/robsoncouto/arduino-songs/blob/master/thegodfather/thegodfather.ino">The Godfather Theme</a>
+ <a href="https://github.com/robsoncouto/arduino-songs/blob/master/starwars/starwars.ino">Star Wars Theme</a>
+ <a href="https://github.com/robsoncouto/arduino-songs/blob/master/nokia/nokia.ino">Nokia Ringtone</a>
+
+
+ Also here is a video with the Piezo Buzzer (The Godfather theme) and the Oscilloscope:
+ <video controls>
+    <source src="Piezo_graph.mp4" type="video/mp4">
+</video>
+
+
+
+ <h2> 4. Thermistor and Motor </h2>
+ For this week's assignment, I used a Thermistor as an input device and a motor as an output device. The motor will start running as soon as a certain temperature is surpassed by the thermistor. For my program, I just chose a temperature of 22 degree Celcius because I could achieve that temperature just by touching the thermistor. I had tries setting this parameter to 25 degree Celcius also earlier, but that tempearture was difficult to achieve with just touching my hand. Here is a video demonstrating the thermistor and the motor:
+ <video controls>
+    <source src="thermistor_motor.mp4" type="video/mp4">
+</video>
+
+ Here is the code that I used for my program:
+ <pre><code class="language-arduino">
+//Thermometer with thermistor
+/*thermistor parameters:
+ * RT0: 10 000 Ω
+ * B: 3977 K +- 0.75%
+ * T0:  25 C
+ * +- 5%
+ */
+
+//These values are in the datasheet
+#define RT0 10000   // Ω
+#define B 3977      // K
+//--------------------------------------
+
+
+#define VCC 5    //Supply voltage
+#define R 10000  //R=10KΩ
+
+//Variables
+const int A1A = 3;
+const int A1B = 4;
+float RT, VR, ln, TX, T0, VRT;
+
+
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(A1A, OUTPUT);
+  pinMode(A1B, OUTPUT);
+  digitalWrite(A1A, LOW);
+  digitalWrite(A1B, LOW);
+  T0 = 25 + 273.15;                 //Temperature T0 from datasheet, conversion from Celsius to kelvin
+}
+
+void loop() {
+  VRT = analogRead(A0);              //Acquisition analog value of VRT
+  VRT = (5.00 / 1023.00) * VRT;      //Conversion to voltage
+  VR = VCC - VRT;
+  RT = VRT / (VR / R);               //Resistance of RT
+
+  ln = log(RT / RT0);
+  TX = (1 / ((ln / B) + (1 / T0))); //Temperature from thermistor
+
+  TX = TX - 273.15;                 //Conversion to Celsius
+
+  if (TX >= 22) {
+    digitalWrite(A1A, HIGH);
+  } else if (TX < 25) {
+    digitalWrite(A1A, LOW);
+  }
+  
+  Serial.print("Temperature:");
+  Serial.print("\t");
+  Serial.print(TX);
+  Serial.print("C\t\t");
+  Serial.print(TX + 273.15);        //Conversion to Kelvin
+  Serial.print("K\t\t");
+  Serial.print((TX * 1.8) + 32);    //Conversion to Fahrenheit
+  Serial.println("F");
+  delay(500);
+
+}
+</code></pre> 
+
+
+ I also used the ossciloscope with my program but did not observe square waves as in the case of a Piezo buzzer. This is because the voltage in my program remains constanr and therefore there is no noticeable change that can be mapped on the y-axis (which is voltage). Here is a visual to make it more clear:
+ <video controls>
+    <source src="thermistor_motor_graph.mp4" type="video/mp4">
+</video>
+
+ 
+
+ 
+ 
+ 
+Back to [Home](../index.html).
+
+
+
+</xmp>
+</body>
+
+<script src="https://strapdownjs.com/v/0.2/strapdown.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+
+</html>
