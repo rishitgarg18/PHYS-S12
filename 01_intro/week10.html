@@ -27,23 +27,52 @@
   ### Week 10: Machine Building
  This week we used stepper motors to work to build on the work we had done in our assignment for servo motors. Using stepper motor control, we weare able to control the way our stepper motors move, also achieveing increased accuracy. 
  
- To use a stepper motor, the following materials are required: a breadboard, jumper wires, Arduino UNO/Metro, a 100 microfarad filament, and most importantly, a stepper motor and a motor driver. For this week's assignment, I used the STSPIN220 motor driver. I would suggest the following tutorial to see how the setup for the motor driver works:
+ To use a stepper motor, the following materials are required: a breadboard, jumper wires, Arduino UNO/Metro, a 100 microfarad filament, and most importantly, a stepper motor and a motor driver. For this week's assignment, I used the STSPIN220 motor driver. I would suggest the following tutorial to see how the setup for the motor driver works: <br>
+ <a href="https://www.pololu.com/product/2876">STSPIN220 Tutorial</a>
 
  Here are some photos of my setup with the motor driver:
+ ![image 1](motorsetup.jpeg)
+ ![image 2](motorsetup3.jpeg)
+ ![image 3](motorsetup4.jpeg)
 
  
  After setting up the stepper motor, I used the Week 2 Assignment in Laser Cutting to get different shapes and constructed something using press-fit kit construction and revolved it around the stepper motor. Here is a video:
+ <video controls muted>
+    <source src="week10video.mp4" type="video/mp4">
+</video>
+
 
 
  As we can see, the stepper motor is both accelerating and deaccelerating at certain intervals of time. To achieve, stepper motor control through Arduino programming is necessary. Here is the code I used for this program:
+ <pre><code class="language-arduino">
+#include <AccelStepper.h>
 
- Here are some of the videos and photos from the 3-D printing session itself:
- ![photo1](IMG_6045.jpg)
- ![photo2](IMG_6046.jpg)
- ![photo3](IMG_6047.jpg)<br>
- <video controls>
-    <source src="3dvideo.mp4" type="video/mp4">
-</video>
+const int stepPin = 13;  // blue
+const int dirPin = 12;   // orange
+
+// Define a stepper and the pins it will use
+AccelStepper stepper(1, stepPin, dirPin); // initialise accelstepper for a two wire board
+
+void setup()
+{
+}
+
+void loop()
+{
+  if (stepper.distanceToGo() == 0)
+  {
+    // Random change to speed, position and acceleration
+    // Make sure we dont get 0 speed or accelerations
+    delay(1000);
+    stepper.moveTo(rand() % 1000);
+    stepper.setMaxSpeed((rand() % 1000) + 1);
+    stepper.setAcceleration((rand() % 1000) + 1);
+  }
+  stepper.run();
+}
+</code></pre> 
+
+ 
 
  
  
