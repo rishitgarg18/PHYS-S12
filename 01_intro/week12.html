@@ -26,21 +26,21 @@
 
   ### Week 12: Smart Sole!
  <h2>Idea:</h2>
- I RUN, and running today involves more data and metrics than ever before. One metric that no watch or App on a phone is able to track is the nature in which a runner strikes the foot. Even though some footwear brands do sell 'smart shoes', they are shoes with chips embedded in them. This project aims to create an insole that can be used with any shoe and is also very easy to make. 
+ I RUN, and running today involves more data and metrics than ever before. One metric that no watch or App on a phone is able to track is the nature in which a runner strikes the foot. Even though some footwear brands do sell 'smart shoes', they are shoes with chips embedded in them. This project aims to create an insole that can be used with any shoe and is also very easy to make. <p>
  
- We will classify the way a runner strikes the foot while running in the following ways:
- 1. Heel-Strike: when the heel makes contact with the ground first, ideal for slow runs or walks.
- 2. Mid-foot Strike: when the mid-sole of the shoe makes direct contact with the ground, ideal for long distance runners.
- 3. Toe-Strike: when the toe end of the shoe makes constact with the ground first, ideal for sprinters and short distance runners.
+ We will classify the way a runner strikes the foot while running in the following ways: <br>
+ 1. Heel-Strike: when the heel makes contact with the ground first, ideal for slow runs or walks. <br>
+ 2. Mid-foot Strike: when the mid-sole of the shoe makes direct contact with the ground, ideal for long distance runners. <br>
+ 3. Toe-Strike: when the toe end of the shoe makes constact with the ground first, ideal for sprinters and short distance runners. <br>
 
  <h2>The Processing:</h2>
- I used Dr. Scholl's insoles to work with my project and inserted my sensors and boards on the insole itself in such a manner that my insole can be used with any shoe.
+ I used Dr. Scholl's insoles to work with my project and inserted my sensors and boards on the insole itself in such a manner that my insole can be used with any shoe. <br>
 
- I would encourage you to refer to my Week 9 Assignment to see how I was able to set up an ESP32 with a gyroscope on a web server. This weekly assignment turned put to be very useful in the making of my Final Project. Here is the link: [Week 9: Networking and IoT](iot.html)
+ I would encourage you to refer to my Week 9 Assignment to see how I was able to set up an ESP32 with a gyroscope on a web server. This weekly assignment turned put to be very useful in the making of my Final Project. Here is the link: [Week 9: Networking and IoT](iot.html) <br>
   
- Due to the large size of the ESP32 board as used in the Week 9 assignment, I switched to the ESP32 Feather Huzzah board as it is compact and also comes with a socket for a battery, hence giving us power on the go.
+ Due to the large size of the ESP32 board as used in the Week 9 assignment, I switched to the ESP32 Feather Huzzah board as it is compact and also comes with a socket for a battery, hence giving us power on the go. <br>
  
- I would recommend looking at the following photo for seeing how the wiring works for an ESP32 Feather Huzzah 32 board. Allso, since we are now using a battery power source, we will not connect the VIN on the gyroscope to the 5V or the 3.3V, but the 'BAT' pin.
+ I would recommend looking at the following photo for seeing how the wiring works for an ESP32 Feather Huzzah 32 board. Allso, since we are now using a battery power source, we will not connect the VIN on the gyroscope to the 5V or the 3.3V, but the 'BAT' pin. <br>
 
  ![ESP 32 Feather Pinout](AdafruitHuzzah32PinDiagram.png)
  
@@ -66,10 +66,10 @@
 
  
  <h2>The Working and the Output:</h2>
- The ESP 32 Feather is Wifi eabled and uses a web server to display our results. The gyroscope gives us the following readings:
- 1. The Position of the shoe in three dimension at any time.
- 2. The acceleation of the shoe along any axis at a given time.
- 3. The Temperature of the sorrounding at any time.
+ The ESP 32 Feather is Wifi eabled and uses a web server to display our results. The gyroscope gives us the following readings: <br>
+ 1. The Position of the shoe in three dimension at any time. <br>
+ 2. The acceleation of the shoe along any axis at a given time. <br>
+ 3. The Temperature of the sorrounding at any time. <br>
 
  Here is a video of the live working of the shoe and displaying these readings: <br>
  <video controls>
@@ -79,17 +79,17 @@
 
  <h2>Interpreting These Readings:</h2>
  
- By calibrating my data, I was able to come up with the following conclusions:
- 1. When the Position along the y-axis and the z-axis is negative, we get a Toe-Strike
- 2. When the Position along the y-axis and z-axis is positive, we get a Heel-Strike
+ By calibrating my data, I was able to come up with the following conclusions: <br>
+ 1. When the Position along the y-axis and the z-axis is negative, we get a Toe-Strike <br>
+ 2. When the Position along the y-axis and z-axis is positive, we get a Heel-Strike <br>
 
- Because we want good form for any runner, a Mid-Foot Strike is always preffered for any long run. The closer the position readings on the y-axis and the z-axis are to zero, the better the Mid-Foot Strike. The reason for this is that we are naturally taking a mid foot strike to be our zero (when the shoe is at rest).
+ Because we want good form for any runner, a Mid-Foot Strike is always preffered for any long run. The closer the position readings on the y-axis and the z-axis are to zero, the better the Mid-Foot Strike. The reason for this is that we are naturally taking a mid foot strike to be our zero (when the shoe is at rest). <p>
 
- The Position reading along the x-axis is not a very good measure of the way our foot strikes the ground because the x-axis is actually only giving us the dispacement of our gyroscope inside the shoe from our zero.
+ The Position reading along the x-axis is not a very good measure of the way our foot strikes the ground because the x-axis is actually only giving us the dispacement of our gyroscope inside the shoe from our zero. <p>
 
- On the other hand, the x-axis is our best option for knowing the acceleration of the runner, as in this case, we are interested in the accerelation of the runner to cover horizontal distance along the x-axis. 
+ On the other hand, the x-axis is our best option for knowing the acceleration of the runner, as in this case, we are interested in the accerelation of the runner to cover horizontal distance along the x-axis. <p>
 
- The Temperature reading can be used to know how a runner's perofrmance and analytics are influenced with a temperature. This change is purely psychological and does not have much to do with running, but can be very useful information for a runner. For example, a runner that likes cold weather may be running with better form in the cold weather, and this information could be vital to them to improve on their overall performance as a runner. 
+ The Temperature reading can be used to know how a runner's perofrmance and analytics are influenced with a temperature. This change is purely psychological and does not have much to do with running, but can be very useful information for a runner. For example, a runner that likes cold weather may be running with better form in the cold weather, and this information could be vital to them to improve on their overall performance as a runner. <p>
 
  
  <h2>Alternative Approach:</h2>
